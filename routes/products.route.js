@@ -20,4 +20,36 @@ router.get("/:id?", async (req, res, next) => {
     }
 });
 
+router.post("/", async (req, res, next) => {
+    try {
+        const newProduct = req.body;
+        const data = await productsController.addProduct(newProduct);
+        res.json(data);
+    } catch(err) {
+        next(err);
+    }
+});
+
+router.put("/:id", async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const updatedProduct = req.body;
+        const data = productsController.updateProduct(id, updatedProduct);
+        console.log(updatedProduct);
+        res.json(data);
+    } catch(err) {
+        next(err);
+    }
+});
+
+router.delete("/:id", async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const data = await productsController.deleteProduct(id);
+        res.json(data);
+    } catch(err) {
+        next(err);
+    }
+});
+
 export default router;

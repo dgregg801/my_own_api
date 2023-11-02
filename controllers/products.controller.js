@@ -1,7 +1,7 @@
 import query from "../config/connection";
 
 async function getOne(id) {
-    return query("SELECT * FROM orders WHERE productID = ?", [id]);
+    return query("SELECT * FROM orders WHERE order_id = ?", [id]);
 }
 
 async function getAll() {
@@ -13,11 +13,11 @@ async function addProduct(newProductInfo) {
 }
 
 async function updateProduct(id, updatedProductInfo) {
-    return query("UPDATE orders SET ? WHERE productID = ?", [updatedProductInfo, id]);
+    return query("UPDATE orders SET ? WHERE order_id = ?", [updatedProductInfo, id]);
 }
 
 async function deleteProduct(id) {
-    return query("DELETE FROM orders WHERE productID = ?", [id]);
+    return query("DELETE FROM orders WHERE order_id = ?", [id]);
 }
 
 export default {
