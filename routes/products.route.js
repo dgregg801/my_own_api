@@ -1,15 +1,16 @@
 import productsController from "../controllers/products.controller"; 
 import express from "express";
+import { v4 as uuidv4 } from 'uuid';
 
 const router = express.Router();
 
-router.get("/:id?", async (req, res, next) => {
+router.get("/:order_id?", async (req, res, next) => {
     try {
-        const { id } = req.params;
+        const { order_id } = req.params;
 
         let data;
-        if (id) {
-            data = await productsController.getOne(id);
+        if (order_id) {
+            data = await productsController.getOne(order_id);
         } else {
             data = await productsController.getAll();
         }
@@ -22,7 +23,7 @@ router.get("/:id?", async (req, res, next) => {
 
 router.post("/", async (req, res, next) => {
     try {
-        const newProduct = req.body;
+        const newProduct = {...req.body, order_id:uuidv4()};
         const data = await productsController.addProduct(newProduct);
         res.json(data);
     } catch(err) {
@@ -30,11 +31,11 @@ router.post("/", async (req, res, next) => {
     }
 });
 
-router.put("/:id", async (req, res, next) => {
+router.put("/:order_id", async (req, res, next) => {
     try {
-        const { id } = req.params;
-        const updatedProduct = req.body;
-        const data = productsController.updateProduct(id, updatedProduct);
+        const { order_id } = req.params;
+        const updatedProduct = {...req.body, order_id: uuidv4() };
+        const data = productsController.updateProduct(order_id, updatedProduct);
         console.log(updatedProduct);
         res.json(data);
     } catch(err) {
@@ -42,10 +43,10 @@ router.put("/:id", async (req, res, next) => {
     }
 });
 
-router.delete("/:id", async (req, res, next) => {
+router.delete("/:order_id", async (req, res, next) => {
     try {
-        const { id } = req.params;
-        const data = await productsController.deleteProduct(id);
+        const { order_id } = req.params;
+        const data = await productsController.deleteProduct(order_id);
         res.json(data);
     } catch(err) {
         next(err);
